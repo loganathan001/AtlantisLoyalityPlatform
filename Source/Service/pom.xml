@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.mindtree.atlantis</groupId>
+	<artifactId>loyalty-platform-parent</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>Loyalty Platform Parent</name>
+	<description>Atlantis Loyalty Platform Parent</description>
+	<properties>
+		<java.version>11</java.version>
+		<spring.boot.version>2.0.2.RELEASE</spring.boot.version>
+		<spring.security.test.version>5.0.5.RELEASE</spring.security.test.version>
+		<lombok.version>1.18.8</lombok.version>
+		
+		<loyalty-points-core.version>${project.version}</loyalty-points-core.version>
+		
+		<maven.swagger.version>2.9.2</maven.swagger.version>
+		
+		<h2.version>1.4.200</h2.version>
+		
+		<junit.version>4.12</junit.version>
+		
+		<maven.jar.plugin.version>3.0.2</maven.jar.plugin.version>
+		<maven.war.plugin.version>3.1.0</maven.war.plugin.version>
+		<maven.compiler.source>11</maven.compiler.source>
+		<maven.compiler.target>11</maven.compiler.target>
+		<maven.compiler.version>3.8.0</maven.compiler.version>
+		<maven.javadoc.version>3.2.0</maven.javadoc.version>
+		<maven.swagger.version>2.9.2</maven.swagger.version>
+		<maven.jacoco.version>0.8.2</maven.jacoco.version>
+		<maven.sonar.version>3.7.0.1746</maven.sonar.version>
+		<powermock.version>2.0.0</powermock.version>
+		<maven.surefire.plugin.version>2.22.0</maven.surefire.plugin.version>
+	</properties>
+	<packaging>pom</packaging>
+	
+	<modules>
+		<module>loyalty-points-service</module>
+		<module>authentication-service</module>
+	</modules>
+	<dependencies>
+		<!-- JUnit -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>${junit.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<optional>true</optional>
+			<version>${lombok.version}</version>
+		</dependency>
+		<!-- Swagger -->
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger2</artifactId>
+			<version>${maven.swagger.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger-ui</artifactId>
+			<version>${maven.swagger.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>javax.xml.bind</groupId>
+			<artifactId>jaxb-api</artifactId>
+			<version>2.3.1</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-webflux</artifactId>
+			<version>${spring.boot.version}</version>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>${maven.compiler.version}</version>
+				<configuration>
+					<source>${maven.compiler.source}</source>
+					<target>${maven.compiler.target}</target>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>3.2.0</version>
+				<executions>
+					<execution>
+						<id>attach-javadocs</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<doclint>none</doclint>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>${maven.jacoco.version}</version>
+				<configuration>
+					<excludes>
+						<exclude>**/constant/**</exclude>
+						<exclude>**/config/**</exclude>
+						<exclude>**/dto/**</exclude>
+						<exclude>io/mosip/authentication/service/*.class</exclude>
+						<exclude>io/mosip/authentication/service/filter/**</exclude>
+					</excludes>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>prepare-agent</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>report</id>
+						<phase>prepare-package</phase>
+						<goals>
+							<goal>report</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>${maven.jar.plugin.version}</version>
+				<configuration>
+					<archive>
+						<manifest>
+							<addClasspath>true</addClasspath>
+							<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+						</manifest>
+						<manifestEntries>
+							<Project-Name>${project.name}</Project-Name>
+							<Project-Version>${project.version}</Project-Version>
+						</manifestEntries>
+					</archive>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>pl.project13.maven</groupId>
+				<artifactId>git-commit-id-plugin</artifactId>
+				<version>3.0.1</version>
+				<executions>
+					<execution>
+						<id>get-the-git-infos</id>
+						<goals>
+							<goal>revision</goal>
+						</goals>
+						<phase>validate</phase>
+					</execution>
+				</executions>
+				<configuration>
+					<generateGitPropertiesFile>true</generateGitPropertiesFile>
+					<generateGitPropertiesFilename>${project.build.outputDirectory}/git.properties</generateGitPropertiesFilename>
+					<includeOnlyProperties>
+						<includeOnlyProperty>^git.build.(time|version)$</includeOnlyProperty>
+						<includeOnlyProperty>^git.commit.id.(abbrev|full)$</includeOnlyProperty>
+					</includeOnlyProperties>
+					<commitIdGenerationMode>full</commitIdGenerationMode>
+					<dotGitDirectory>${project.basedir}/.git</dotGitDirectory>
+					<!-- <format>json</format> -->
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>${maven.surefire.plugin.version}</version>
+				<configuration>
+					<skipTests>${skipTests}</skipTests>
+					<skip>false</skip>
+					<argLine>
+						${argLine} --add-opens java.xml/jdk.xml.internal=ALL-UNNAMED --illegal-access=permit
+					</argLine>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>
