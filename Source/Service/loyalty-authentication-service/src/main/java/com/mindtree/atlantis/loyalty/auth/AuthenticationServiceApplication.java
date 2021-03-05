@@ -4,13 +4,14 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Import;
 
+import com.mindtree.atlantis.loyalty.core.config.AuthConfig;
 import com.mindtree.atlantis.loyalty.core.config.CoreConfig;
+import com.mindtree.atlantis.loyalty.core.config.RestConfig;
 import com.mindtree.atlantis.loyalty.core.exception.AtlantisExceptionHandler;
-import com.mindtree.atlantis.loyalty.core.util.RestConfig;
 import com.mindtree.atlantis.loyalty.core.util.RestUtil;
 
 @SpringBootApplication
-@Import({RestUtil.class, CoreConfig.class, RestConfig.class, AtlantisExceptionHandler.class})
+@Import({RestUtil.class, CoreConfig.class, RestConfig.class, AtlantisExceptionHandler.class, AuthConfig.class})
 public class AuthenticationServiceApplication {
 
 	public static void main(String[] args) {

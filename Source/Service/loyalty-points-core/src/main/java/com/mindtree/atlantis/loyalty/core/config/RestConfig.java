@@ -1,4 +1,4 @@
-package com.mindtree.atlantis.loyalty.core.util;
+package com.mindtree.atlantis.loyalty.core.config;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -9,6 +9,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Configuration;
 
 import com.mindtree.atlantis.loyalty.core.constant.RestAPI;
+import com.mindtree.atlantis.loyalty.core.util.RestAPIInfo;
 
 @EnableConfigurationProperties
 @Configuration

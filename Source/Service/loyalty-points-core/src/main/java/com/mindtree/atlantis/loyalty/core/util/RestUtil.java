@@ -16,6 +16,7 @@ import org.springframework.web.reactive.function.client.WebClient.Builder;
 import org.springframework.web.reactive.function.client.WebClient.RequestBodyUriSpec;
 import org.springframework.web.reactive.function.client.WebClientException;
 
+import com.mindtree.atlantis.loyalty.core.config.RestConfig;
 import com.mindtree.atlantis.loyalty.core.constant.AtlantisErrorConstants;
 import com.mindtree.atlantis.loyalty.core.constant.RestAPI;
 import com.mindtree.atlantis.loyalty.core.exception.RestException;
