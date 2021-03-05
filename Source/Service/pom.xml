@@ -36,6 +36,7 @@
 	<packaging>pom</packaging>
 	
 	<modules>
+		<module>loyalty-points-core</module>
 		<module>loyalty-points-service</module>
 		<module>authentication-service</module>
 	</modules>
