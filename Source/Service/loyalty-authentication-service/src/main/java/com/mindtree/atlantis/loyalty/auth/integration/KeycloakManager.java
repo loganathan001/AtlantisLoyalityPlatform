@@ -10,8 +10,6 @@ import org.springframework.util.MultiValueMap;
 
 import com.mindtree.atlantis.loyalty.core.constant.AtlantisErrorConstants;
 import com.mindtree.atlantis.loyalty.core.constant.RestAPI;
-import com.mindtree.atlantis.loyalty.core.dto.Status;
-import com.mindtree.atlantis.loyalty.core.dto.StatusResponseDTO;
 import com.mindtree.atlantis.loyalty.core.dto.auth.ClientAuthRequestDTO;
 import com.mindtree.atlantis.loyalty.core.exception.RestException;
 import com.mindtree.atlantis.loyalty.core.util.RestUtil;
@@ -28,7 +26,7 @@ public class KeycloakManager {
 	@Autowired
 	private RestUtil restUtil;
 	
-	public StatusResponseDTO loginClient(ClientAuthRequestDTO clientAuthRequestDto) throws RestException {
+	public Map<?, ?> loginClient(ClientAuthRequestDTO clientAuthRequestDto) throws RestException {
 		MultiValueMap<String, String> clientLoginAttributes = new LinkedMultiValueMap<>();
 		clientLoginAttributes.add(CLIENT_ID, clientAuthRequestDto.getClientId());
 		clientLoginAttributes.add(CLIENT_SECRET, clientAuthRequestDto.getClientSecret());
@@ -39,7 +37,7 @@ public class KeycloakManager {
 		if(responseBody.containsKey(ERROR)) {
 			throw new RestException(AtlantisErrorConstants.AUTHENTICATION_FAILED, new Exception(responseBody.get(ERROR) + " : " + responseBody.get(ERROR_DESCRIPTION)));
 		}
-		return new StatusResponseDTO(Status.SUCCESS.getMessage());		
+		return responseBody;		
 	}
 
 }

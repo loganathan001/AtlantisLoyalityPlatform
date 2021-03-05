@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.mindtree.atlantis.loyalty.core.dto.RequestWrapper;
 import com.mindtree.atlantis.loyalty.core.dto.ResponseWrapper;
-import com.mindtree.atlantis.loyalty.core.dto.StatusResponseDTO;
 import com.mindtree.atlantis.loyalty.core.dto.auth.ClientAuthRequestDTO;
 import com.mindtree.atlantis.loyalty.core.exception.AtlantisBaseCheckedException;
 import com.mindtree.atlantis.loyalty.core.spi.auth.AuthenticationService;
@@ -19,7 +18,7 @@ public class AuthenticationController {
 	private AuthenticationService authenticationService;
 	
 	@PostMapping("/clientlogin")
-	public ResponseWrapper<StatusResponseDTO> clientLogin(@RequestBody RequestWrapper<ClientAuthRequestDTO> requestDTO) throws AtlantisBaseCheckedException {
+	public ResponseWrapper<?> clientLogin(@RequestBody RequestWrapper<ClientAuthRequestDTO> requestDTO) throws AtlantisBaseCheckedException {
 		return authenticationService.authenticateClient(requestDTO);
 	}
 }
