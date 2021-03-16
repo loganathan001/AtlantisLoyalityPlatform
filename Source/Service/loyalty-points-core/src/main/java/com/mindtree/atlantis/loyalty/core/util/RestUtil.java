@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.ClientResponse;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClient.Builder;
+import org.springframework.web.reactive.function.client.WebClient.RequestBodySpec;
 import org.springframework.web.reactive.function.client.WebClient.RequestBodyUriSpec;
 import org.springframework.web.reactive.function.client.WebClientException;
 
@@ -53,23 +54,23 @@ public class RestUtil {
 		WebClient webClient = webClientBuilder.build();
 		RequestBodyUriSpec requestBodyUriSpec = webClient.method(HttpMethod.valueOf(restAPIInfo.getMethod()));
 		
-		requestBodyUriSpec.uri(restAPIInfo.getUrl(), uriVariables == null ? Map.of() : uriVariables);
+		RequestBodySpec requestUriSpec = requestBodyUriSpec.uri(restAPIInfo.getUrl(), uriVariables == null ? Map.of() : uriVariables);
 
 		if (restAPIInfo.getContentType() != null) {
-			requestBodyUriSpec.contentType(MediaType.valueOf(restAPIInfo.getContentType()));
+			requestUriSpec.contentType(MediaType.valueOf(restAPIInfo.getContentType()));
 		}
 
 		if (restAPIInfo.getMimeType() != null) {
-			requestBodyUriSpec.accept(MediaType.valueOf(restAPIInfo.getContentType()));
+			requestUriSpec.accept(MediaType.valueOf(restAPIInfo.getContentType()));
 		}
 
 		if (requestBody != null) {
 			// For MultiPart Form Data / Form URL Encoded data the requestBody should be
 			// instance of MultiValueMap, otherwise, it can be any object
-			requestBodyUriSpec.syncBody(requestBody);
+			requestUriSpec.syncBody(requestBody);
 		}
 
-		Mono<ClientResponse> mono = requestBodyUriSpec.exchange();
+		Mono<ClientResponse> mono = requestUriSpec.exchange();
 
 		try {
 			T response;
@@ -90,6 +91,7 @@ public class RestUtil {
 				return new ResponseEntity<>(response, HttpStatus.OK);
 
 			} else {
+				mono.block();
 				return new ResponseEntity<>(HttpStatus.OK);
 			}
 

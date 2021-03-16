@@ -7,6 +7,8 @@ public class TokenResponseDTO {
 	
 	private String accessToken;
 	
+	private String idToken;
+	
 	private int expiresInSecs;
 	
 }
