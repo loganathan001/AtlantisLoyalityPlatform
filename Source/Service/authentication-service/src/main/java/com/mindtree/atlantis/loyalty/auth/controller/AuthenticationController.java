@@ -59,16 +59,19 @@ public class AuthenticationController {
 	@GetMapping("/user/logout")
 	public ResponseEntity<?> logout(HttpServletRequest request, HttpServletResponse response)
 			throws AtlantisBaseCheckedException {
-		String idToken = WebUtils.getCookie(request, COOKIE_HEADER_ID_TOKEN).getValue();
-		authenticationService.logoutUser(idToken);
-
-		Cookie authTokenCookie = new Cookie(COOKIE_HEADER_AUTHORIZATION, null);
-		authTokenCookie.setMaxAge(0);
-		response.addCookie(authTokenCookie);
-
-		Cookie idTokenCookie = new Cookie(COOKIE_HEADER_ID_TOKEN, null);
-		idTokenCookie.setMaxAge(0);
-		response.addCookie(idTokenCookie);
+		Cookie idTokenCookieInReq = WebUtils.getCookie(request, COOKIE_HEADER_ID_TOKEN);
+		if(idTokenCookieInReq != null) {
+			String idToken = idTokenCookieInReq.getValue();
+			authenticationService.logoutUser(idToken);
+	
+			Cookie authTokenCookie = new Cookie(COOKIE_HEADER_AUTHORIZATION, null);
+			authTokenCookie.setMaxAge(0);
+			response.addCookie(authTokenCookie);
+	
+			Cookie idTokenCookie = new Cookie(COOKIE_HEADER_ID_TOKEN, null);
+			idTokenCookie.setMaxAge(0);
+			response.addCookie(idTokenCookie);
+		}
 
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
