@@ -19,6 +19,7 @@ import com.mindtree.atlantis.loyalty.core.dto.RequestWrapper;
 import com.mindtree.atlantis.loyalty.core.dto.ResponseWrapper;
 import com.mindtree.atlantis.loyalty.core.dto.Status;
 import com.mindtree.atlantis.loyalty.core.dto.StatusResponseDTO;
+import com.mindtree.atlantis.loyalty.core.dto.auth.ClientAuthRequestDTO;
 import com.mindtree.atlantis.loyalty.core.dto.auth.TokenResponseDTO;
 import com.mindtree.atlantis.loyalty.core.dto.auth.UserAuthRequestDTO;
 import com.mindtree.atlantis.loyalty.core.exception.AtlantisBaseCheckedException;
@@ -30,10 +31,10 @@ public class AuthenticationController {
 	@Autowired
 	private AuthenticationService authenticationService;
 
-//	@PostMapping("/clienttoken")
-//	public ResponseWrapper<TokenResponseDTO> clientLogin(@RequestBody RequestWrapper<ClientAuthRequestDTO> requestDTO) throws AtlantisBaseCheckedException {
-//		return authenticationService.authenticateClient(requestDTO);
-//	}
+	@PostMapping("/clienttoken")
+	public ResponseWrapper<TokenResponseDTO> clientLogin(@RequestBody RequestWrapper<ClientAuthRequestDTO> requestDTO) throws AtlantisBaseCheckedException {
+		return authenticationService.authenticateClient(requestDTO);
+	}
 
 	@PostMapping("/user/login")
 	public ResponseEntity<ResponseWrapper<StatusResponseDTO>> userLogin(
@@ -75,4 +76,5 @@ public class AuthenticationController {
 
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
+	
 }

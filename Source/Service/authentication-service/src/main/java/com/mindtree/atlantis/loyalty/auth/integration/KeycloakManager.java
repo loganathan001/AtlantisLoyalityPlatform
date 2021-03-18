@@ -3,6 +3,7 @@ import static com.mindtree.atlantis.loyalty.core.constant.ALPConstants.CLIENT_ID
 import static com.mindtree.atlantis.loyalty.core.constant.ALPConstants.CLIENT_SECRET;
 import static com.mindtree.atlantis.loyalty.core.constant.ALPConstants.ERROR;
 import static com.mindtree.atlantis.loyalty.core.constant.ALPConstants.ERROR_DESCRIPTION;
+import static com.mindtree.atlantis.loyalty.core.constant.ALPConstants.GRANT_CLIENT_CREDENTIALS;
 import static com.mindtree.atlantis.loyalty.core.constant.ALPConstants.GRANT_PASSWORD;
 import static com.mindtree.atlantis.loyalty.core.constant.ALPConstants.GRANT_TYPE;
 import static com.mindtree.atlantis.loyalty.core.constant.ALPConstants.ID_TOKEN_HINT;
@@ -37,19 +38,19 @@ public class KeycloakManager {
 	@Autowired
 	private AuthConfig authConfig;
 	
-//	public Map<?, ?> loginClient(ClientAuthRequestDTO clientAuthRequestDto) throws RestException {
-//		MultiValueMap<String, String> clientLoginAttributes = new LinkedMultiValueMap<>();
-//		clientLoginAttributes.add(CLIENT_ID, clientAuthRequestDto.getClientId());
-//		clientLoginAttributes.add(CLIENT_SECRET, clientAuthRequestDto.getClientSecret());
-//		clientLoginAttributes.add(GRANT_TYPE, GRANT_CLIENT_CREDENTIALS);
-//		
-//		ResponseEntity<Map> responseEntity = restUtil.doHttpRequest(RestAPI.KEYCLOAK_CLIENT_LOGIN, null, clientLoginAttributes, Map.class);
-//		Map<?, ?> responseBody = responseEntity.getBody();
-//		if(responseBody.containsKey(ERROR)) {
-//			throw new RestException(AtlantisErrorConstants.AUTHENTICATION_FAILED, new Exception(responseBody.get(ERROR) + " : " + responseBody.get(ERROR_DESCRIPTION)));
-//		}
-//		return responseBody;
-//	}
+	public Map<?, ?> loginClient(ClientAuthRequestDTO clientAuthRequestDto) throws RestException {
+		MultiValueMap<String, String> clientLoginAttributes = new LinkedMultiValueMap<>();
+		clientLoginAttributes.add(CLIENT_ID, clientAuthRequestDto.getClientId());
+		clientLoginAttributes.add(CLIENT_SECRET, clientAuthRequestDto.getClientSecret());
+		clientLoginAttributes.add(GRANT_TYPE, GRANT_CLIENT_CREDENTIALS);
+		
+		ResponseEntity<Map> responseEntity = restUtil.doHttpRequest(RestAPI.KEYCLOAK_CLIENT_LOGIN, null, clientLoginAttributes, Map.class);
+		Map<?, ?> responseBody = responseEntity.getBody();
+		if(responseBody.containsKey(ERROR)) {
+			throw new RestException(AtlantisErrorConstants.AUTHENTICATION_FAILED, new Exception(responseBody.get(ERROR) + " : " + responseBody.get(ERROR_DESCRIPTION)));
+		}
+		return responseBody;
+	}
 
 	public Map<?, ?> loginUser(UserAuthRequestDTO userAuthRequestDto) throws RestException {
 		MultiValueMap<String, String> userLoginAttributes = new LinkedMultiValueMap<>();
