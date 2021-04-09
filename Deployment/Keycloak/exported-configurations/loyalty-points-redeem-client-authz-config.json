@@ -1,0 +1,52 @@
+{
+  "allowRemoteResourceManagement": true,
+  "policyEnforcementMode": "ENFORCING",
+  "resources": [
+    {
+      "name": "loyaltypoints",
+      "ownerManagedAccess": false,
+      "attributes": {},
+      "_id": "208a1a21-c411-49f6-b6bb-4fe0b697db54",
+      "uris": [
+        "/loyaltypoints/redeem"
+      ],
+      "scopes": [
+        {
+          "name": "redeem"
+        }
+      ]
+    }
+  ],
+  "policies": [
+    {
+      "id": "f861d436-6aba-49b3-85fc-058ab51caabf",
+      "name": "redeem-only",
+      "type": "role",
+      "logic": "POSITIVE",
+      "decisionStrategy": "UNANIMOUS",
+      "config": {
+        "roles": "[{\"id\":\"REDEEM_POINTS\",\"required\":false}]"
+      }
+    },
+    {
+      "id": "34102629-2df0-4b15-8b81-2d49af6b16ba",
+      "name": "loyaltypoints-redeem",
+      "type": "scope",
+      "logic": "POSITIVE",
+      "decisionStrategy": "UNANIMOUS",
+      "config": {
+        "resources": "[\"loyaltypoints\"]",
+        "scopes": "[\"redeem\"]",
+        "applyPolicies": "[\"redeem-only\"]"
+      }
+    }
+  ],
+  "scopes": [
+    {
+      "id": "1ff28360-7779-43df-8d3f-3424355167e0",
+      "name": "redeem",
+      "displayName": "Redeem loyalty points"
+    }
+  ],
+  "decisionStrategy": "UNANIMOUS"
+}

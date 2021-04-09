@@ -1,0 +1,101 @@
+{
+  "allowRemoteResourceManagement": true,
+  "policyEnforcementMode": "ENFORCING",
+  "resources": [
+    {
+      "name": "loyaltypoints",
+      "ownerManagedAccess": true,
+      "displayName": "Loyalty Points",
+      "attributes": {},
+      "_id": "5d3f52ad-28af-4e80-968a-cce58ac131a4",
+      "uris": [
+        "/loyaltypoints/loyaltyid/*"
+      ],
+      "scopes": [
+        {
+          "name": "view"
+        },
+        {
+          "name": "purchase"
+        }
+      ]
+    },
+    {
+      "name": "transations",
+      "ownerManagedAccess": true,
+      "displayName": "The transactions associated to a loyalty ID",
+      "attributes": {},
+      "_id": "e680e6e6-dc26-4315-a968-835204ba4a4d",
+      "uris": [
+        "/transactions/loyaltyid/*"
+      ],
+      "scopes": [
+        {
+          "name": "view"
+        }
+      ]
+    }
+  ],
+  "policies": [
+    {
+      "id": "2df9d48b-0519-4a29-adfe-41a026ab6f1d",
+      "name": "enduser-only",
+      "description": "This allows user only to read access",
+      "type": "role",
+      "logic": "POSITIVE",
+      "decisionStrategy": "UNANIMOUS",
+      "config": {
+        "roles": "[{\"id\":\"ENDUSER\",\"required\":false}]"
+      }
+    },
+    {
+      "id": "3df19637-0350-4ffe-9e41-f8f2acc384a7",
+      "name": "loyaltypoints-view-enduser",
+      "type": "scope",
+      "logic": "POSITIVE",
+      "decisionStrategy": "UNANIMOUS",
+      "config": {
+        "resources": "[\"loyaltypoints\"]",
+        "scopes": "[\"view\"]",
+        "applyPolicies": "[\"enduser-only\"]"
+      }
+    },
+    {
+      "id": "ec7a17ea-4545-4bcb-bec5-b56d4aca04c7",
+      "name": "loyaltypoints-purchase-enduser",
+      "type": "scope",
+      "logic": "POSITIVE",
+      "decisionStrategy": "UNANIMOUS",
+      "config": {
+        "resources": "[\"loyaltypoints\"]",
+        "scopes": "[\"purchase\"]",
+        "applyPolicies": "[\"enduser-only\"]"
+      }
+    },
+    {
+      "id": "f3034d61-6579-487e-a8fa-d505ddb18d78",
+      "name": "transactions-view-enduser",
+      "type": "scope",
+      "logic": "POSITIVE",
+      "decisionStrategy": "UNANIMOUS",
+      "config": {
+        "resources": "[\"transations\"]",
+        "scopes": "[\"view\"]",
+        "applyPolicies": "[\"enduser-only\"]"
+      }
+    }
+  ],
+  "scopes": [
+    {
+      "id": "f6bd2223-58f1-4b76-be35-06a16ebb21ed",
+      "name": "view",
+      "displayName": "View Loyalty Points"
+    },
+    {
+      "id": "1c9db72d-6352-49bc-b00c-9db7c1d1bb78",
+      "name": "purchase",
+      "displayName": "Purchase Loyalty Points"
+    }
+  ],
+  "decisionStrategy": "UNANIMOUS"
+}

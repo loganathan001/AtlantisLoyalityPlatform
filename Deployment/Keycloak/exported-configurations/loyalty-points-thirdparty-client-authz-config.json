@@ -1,0 +1,67 @@
+{
+  "allowRemoteResourceManagement": true,
+  "policyEnforcementMode": "ENFORCING",
+  "resources": [
+    {
+      "name": "loyaltypoints",
+      "ownerManagedAccess": true,
+      "attributes": {},
+      "_id": "17cf9e83-b844-4a72-99b9-7743f8c7ce99",
+      "uris": [
+        "/loyaltypoints/acquire"
+      ],
+      "scopes": [
+        {
+          "name": "acquire"
+        }
+      ]
+    }
+  ],
+  "policies": [
+    {
+      "id": "141f0ce3-4c8e-4c1e-adee-dca4af9ccd85",
+      "name": "thirdparty-only",
+      "type": "role",
+      "logic": "POSITIVE",
+      "decisionStrategy": "UNANIMOUS",
+      "config": {
+        "roles": "[{\"id\":\"THIRDPARTY\",\"required\":false}]"
+      }
+    },
+    {
+      "id": "f2ae507c-d601-4928-8259-6b3ae16fbad7",
+      "name": "loyaltypoints-acquire-thirdparty",
+      "type": "scope",
+      "logic": "POSITIVE",
+      "decisionStrategy": "UNANIMOUS",
+      "config": {
+        "resources": "[\"loyaltypoints\"]",
+        "scopes": "[\"acquire\"]",
+        "applyPolicies": "[\"thirdparty-only\"]"
+      }
+    }
+  ],
+  "scopes": [
+    {
+      "id": "6a3e9c79-10c4-4c17-aa3d-80be5a69e9a8",
+      "name": "view"
+    },
+    {
+      "id": "a4a60edf-a43b-4965-ae94-e3b796fcde27",
+      "name": "purchase"
+    },
+    {
+      "id": "7cf4feb2-65e3-4a88-860f-ae2e7a002827",
+      "name": "redeem"
+    },
+    {
+      "id": "043e4388-c218-4c99-b799-b81180583de2",
+      "name": "acquire"
+    },
+    {
+      "id": "dbd8cf75-1ef8-4a56-a7b9-5f70f1cfecb2",
+      "name": "regenerate"
+    }
+  ],
+  "decisionStrategy": "UNANIMOUS"
+}
