@@ -26,5 +26,11 @@ public class ALPConstants {
 	public static final String GRANT_CLIENT_CREDENTIALS = "client_credentials";
 	public static final String GRANT_PASSWORD = "password";
 	
+	public static final String ID_ATLANTIS_LOYALTY_READ_POINTS = "atlantis.loyalty.read.points";
+	public static final String ID_ATLANTIS_LOYALTY_READ_TRANSACTIONS = "atlantis.loyalty.read.transactions";
+	public static final String ID_ATLANTIS_LOYALTY_PURCHASE_POINTS = "atlantis.loyalty.purchase.points";
+	public static final String ID_ATLANTIS_LOYALTY_ACQUIRE_POINTS = "atlantis.loyalty.acquire.points";
+	public static final String ID_ATLANTIS_LOYALTY_REDEEM_POINTS = "atlantis.loyalty.redeem.points";
+	
 
 }

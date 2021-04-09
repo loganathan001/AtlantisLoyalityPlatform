@@ -1,5 +1,14 @@
 package com.mindtree.atlantis.loyalty.points.controller;
 
+import static com.mindtree.atlantis.loyalty.core.constant.ALPConstants.ID_ATLANTIS_LOYALTY_ACQUIRE_POINTS;
+import static com.mindtree.atlantis.loyalty.core.constant.ALPConstants.ID_ATLANTIS_LOYALTY_PURCHASE_POINTS;
+import static com.mindtree.atlantis.loyalty.core.constant.ALPConstants.ID_ATLANTIS_LOYALTY_READ_POINTS;
+import static com.mindtree.atlantis.loyalty.core.constant.ALPConstants.ID_ATLANTIS_LOYALTY_READ_TRANSACTIONS;
+import static com.mindtree.atlantis.loyalty.core.constant.ALPConstants.ID_ATLANTIS_LOYALTY_REDEEM_POINTS;
+
+import java.time.LocalDateTime;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,37 +22,49 @@ import com.mindtree.atlantis.loyalty.core.dto.points.LoyaltyPointsDTO;
 import com.mindtree.atlantis.loyalty.core.dto.points.PointsTransactionReponseDTO;
 import com.mindtree.atlantis.loyalty.core.dto.points.PointsTransactionRequestDTO;
 import com.mindtree.atlantis.loyalty.core.dto.points.TransactionsDTO;
+import com.mindtree.atlantis.loyalty.core.spi.auth.LoyaltyPointsService;
 
 @RestController
 public class ALPController {
+	
+	@Autowired
+	private LoyaltyPointsService loyaltyPointsService;
 
 	@GetMapping(value = "/loyaltypoints/loyaltyid/{loyaltyid}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseWrapper<LoyaltyPointsDTO> getLoyaltyPoints(@PathVariable("loyaltyid") String loyaltyid) {
-		return null;
+		return createResponseWrapper(loyaltyPointsService.getLoyaltyPoints(loyaltyid), ID_ATLANTIS_LOYALTY_READ_POINTS);
 	}
 
 	@GetMapping(value = "/transactions/loyaltyid/{loyaltyid}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseWrapper<TransactionsDTO> getTransactions(@PathVariable("loyaltyid") String loyaltyid,
 			@RequestParam(name = "type", required = false) Integer transactionType) {
-		return null;
+		return createResponseWrapper(loyaltyPointsService.getTransactions(loyaltyid, transactionType), ID_ATLANTIS_LOYALTY_READ_TRANSACTIONS);
 	}
 
 	@PostMapping(value = "/loyaltypoints/purchase", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseWrapper<PointsTransactionReponseDTO> purchasePoints(
 			@RequestBody PointsTransactionRequestDTO purchasePointsRequestDTO) {
-		return null;
+		return createResponseWrapper(loyaltyPointsService.purchasePoints(purchasePointsRequestDTO), ID_ATLANTIS_LOYALTY_PURCHASE_POINTS);
 	}
 
 	@PostMapping(value = "/loyaltypoints/acquire", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseWrapper<PointsTransactionReponseDTO> acquirePoints(
 			@RequestBody PointsTransactionRequestDTO purchasePointsRequestDTO) {
-		return null;
+		return createResponseWrapper(loyaltyPointsService.acquirePoints(purchasePointsRequestDTO), ID_ATLANTIS_LOYALTY_ACQUIRE_POINTS);
 	}
 
 	@PostMapping(value = "/loyaltypoints/redeem", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseWrapper<PointsTransactionReponseDTO> redeemPoints(
 			@RequestBody PointsTransactionRequestDTO purchasePointsRequestDTO) {
-		return null;
+		return createResponseWrapper(loyaltyPointsService.redeemPoints(purchasePointsRequestDTO), ID_ATLANTIS_LOYALTY_REDEEM_POINTS);
+	}
+	
+	private <T> ResponseWrapper<T> createResponseWrapper(T response, String id) {
+		ResponseWrapper<T> responseWrapper = new ResponseWrapper<T>();
+		responseWrapper.setId(id);
+		responseWrapper.setResponse(response);
+		responseWrapper.setResponseTime(LocalDateTime.now());
+		return responseWrapper;
 	}
 
 }
