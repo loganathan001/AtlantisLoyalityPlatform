@@ -22,7 +22,8 @@ import com.mindtree.atlantis.loyalty.core.dto.points.LoyaltyPointsDTO;
 import com.mindtree.atlantis.loyalty.core.dto.points.PointsTransactionReponseDTO;
 import com.mindtree.atlantis.loyalty.core.dto.points.PointsTransactionRequestDTO;
 import com.mindtree.atlantis.loyalty.core.dto.points.TransactionsDTO;
-import com.mindtree.atlantis.loyalty.core.spi.auth.LoyaltyPointsService;
+import com.mindtree.atlantis.loyalty.core.exception.AtlantisBusinessException;
+import com.mindtree.atlantis.loyalty.core.spi.points.LoyaltyPointsService;
 
 @RestController
 public class ALPController {
@@ -31,31 +32,31 @@ public class ALPController {
 	private LoyaltyPointsService loyaltyPointsService;
 
 	@GetMapping(value = "/loyaltypoints/loyaltyid/{loyaltyid}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseWrapper<LoyaltyPointsDTO> getLoyaltyPoints(@PathVariable("loyaltyid") String loyaltyid) {
+	public ResponseWrapper<LoyaltyPointsDTO> getLoyaltyPoints(@PathVariable("loyaltyid") String loyaltyid) throws AtlantisBusinessException {
 		return createResponseWrapper(loyaltyPointsService.getLoyaltyPoints(loyaltyid), ID_ATLANTIS_LOYALTY_READ_POINTS);
 	}
 
 	@GetMapping(value = "/transactions/loyaltyid/{loyaltyid}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseWrapper<TransactionsDTO> getTransactions(@PathVariable("loyaltyid") String loyaltyid,
-			@RequestParam(name = "type", required = false) Integer transactionType) {
-		return createResponseWrapper(loyaltyPointsService.getTransactions(loyaltyid, transactionType), ID_ATLANTIS_LOYALTY_READ_TRANSACTIONS);
+			@RequestParam(name = "type", required = false) String[] transactionTypes) throws AtlantisBusinessException {
+		return createResponseWrapper(loyaltyPointsService.getTransactions(loyaltyid, transactionTypes), ID_ATLANTIS_LOYALTY_READ_TRANSACTIONS);
 	}
 
 	@PostMapping(value = "/loyaltypoints/purchase", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseWrapper<PointsTransactionReponseDTO> purchasePoints(
-			@RequestBody PointsTransactionRequestDTO purchasePointsRequestDTO) {
+			@RequestBody PointsTransactionRequestDTO purchasePointsRequestDTO) throws AtlantisBusinessException {
 		return createResponseWrapper(loyaltyPointsService.purchasePoints(purchasePointsRequestDTO), ID_ATLANTIS_LOYALTY_PURCHASE_POINTS);
 	}
 
 	@PostMapping(value = "/loyaltypoints/acquire", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseWrapper<PointsTransactionReponseDTO> acquirePoints(
-			@RequestBody PointsTransactionRequestDTO purchasePointsRequestDTO) {
+			@RequestBody PointsTransactionRequestDTO purchasePointsRequestDTO) throws AtlantisBusinessException {
 		return createResponseWrapper(loyaltyPointsService.acquirePoints(purchasePointsRequestDTO), ID_ATLANTIS_LOYALTY_ACQUIRE_POINTS);
 	}
 
 	@PostMapping(value = "/loyaltypoints/redeem", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseWrapper<PointsTransactionReponseDTO> redeemPoints(
-			@RequestBody PointsTransactionRequestDTO purchasePointsRequestDTO) {
+			@RequestBody PointsTransactionRequestDTO purchasePointsRequestDTO) throws AtlantisBusinessException {
 		return createResponseWrapper(loyaltyPointsService.redeemPoints(purchasePointsRequestDTO), ID_ATLANTIS_LOYALTY_REDEEM_POINTS);
 	}
 	

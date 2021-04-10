@@ -3,6 +3,7 @@ package com.mindtree.atlantis.loyalty.core.constant;
 public enum AtlantisErrorConstants {
 	
 	AUTHENTICATION_FAILED("ATL-401", "Authentication Failed"),
+	INVALID_LOYALTY_POINT_ID("ATL-001", "Invalid Loyalty Point ID"),
 	UNKNOWN_ERROR("ATL-005", "Unknown Error"),
 	MISSING_CONFIGURATION("ATL-006", "Missing Configuration: %s"),
 	REST_ERROR("ATL-008", "REST Error - %s")

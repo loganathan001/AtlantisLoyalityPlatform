@@ -1,9 +1,10 @@
-package com.mindtree.atlantis.loyalty.core.spi.auth;
+package com.mindtree.atlantis.loyalty.core.spi.points;
 
 import com.mindtree.atlantis.loyalty.core.dto.points.LoyaltyPointsDTO;
 import com.mindtree.atlantis.loyalty.core.dto.points.PointsTransactionReponseDTO;
 import com.mindtree.atlantis.loyalty.core.dto.points.PointsTransactionRequestDTO;
 import com.mindtree.atlantis.loyalty.core.dto.points.TransactionsDTO;
+import com.mindtree.atlantis.loyalty.core.exception.AtlantisBusinessException;
 
 /**
  * The Interface LoyaltyPointsService.
@@ -15,8 +16,9 @@ public interface LoyaltyPointsService {
 	 *
 	 * @param loyaltyid the loyaltyid
 	 * @return the loyalty points
+	 * @throws AtlantisBusinessException 
 	 */
-	public LoyaltyPointsDTO getLoyaltyPoints(String loyaltyid);
+	public LoyaltyPointsDTO getLoyaltyPoints(String loyaltyid) throws AtlantisBusinessException;
 
 	/**
 	 * Gets the transactions.
@@ -25,7 +27,7 @@ public interface LoyaltyPointsService {
 	 * @param transactionType the transaction type
 	 * @return the transactions
 	 */
-	public TransactionsDTO getTransactions(String loyaltyid, Integer transactionType);
+	public TransactionsDTO getTransactions(String loyaltyid, String[] transactionType) throws AtlantisBusinessException;
 
 	/**
 	 * Purchase points.
@@ -33,7 +35,7 @@ public interface LoyaltyPointsService {
 	 * @param purchasePointsRequestDTO the purchase points request DTO
 	 * @return the points transaction reponse DTO
 	 */
-	public PointsTransactionReponseDTO purchasePoints(PointsTransactionRequestDTO purchasePointsRequestDTO);
+	public PointsTransactionReponseDTO purchasePoints(PointsTransactionRequestDTO purchasePointsRequestDTO) throws AtlantisBusinessException;
 
 	/**
 	 * Acquire points.
@@ -41,7 +43,7 @@ public interface LoyaltyPointsService {
 	 * @param purchasePointsRequestDTO the purchase points request DTO
 	 * @return the points transaction reponse DTO
 	 */
-	public PointsTransactionReponseDTO acquirePoints(PointsTransactionRequestDTO purchasePointsRequestDTO);
+	public PointsTransactionReponseDTO acquirePoints(PointsTransactionRequestDTO purchasePointsRequestDTO) throws AtlantisBusinessException;
 
 	/**
 	 * Redeem points.
@@ -49,5 +51,6 @@ public interface LoyaltyPointsService {
 	 * @param purchasePointsRequestDTO the purchase points request DTO
 	 * @return the points transaction reponse DTO
 	 */
-	public PointsTransactionReponseDTO redeemPoints(PointsTransactionRequestDTO purchasePointsRequestDTO);
+	public PointsTransactionReponseDTO redeemPoints(PointsTransactionRequestDTO purchasePointsRequestDTO) throws AtlantisBusinessException;
+
 }
