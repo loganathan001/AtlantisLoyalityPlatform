@@ -15,7 +15,7 @@ public class LoyaltyPointEntity {
 	private String loyaltyPointId;
 
 	@Field("accrued_points")
-	private String accruedPoints;
+	private long accruedPoints;
 	
 	@Field("cr_dtime")
 	private LocalDateTime crDtimes;

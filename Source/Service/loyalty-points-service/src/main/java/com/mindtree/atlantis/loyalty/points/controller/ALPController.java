@@ -17,10 +17,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.mindtree.atlantis.loyalty.core.constant.AtlantisErrorConstants;
 import com.mindtree.atlantis.loyalty.core.dto.ResponseWrapper;
 import com.mindtree.atlantis.loyalty.core.dto.points.LoyaltyPointsDTO;
 import com.mindtree.atlantis.loyalty.core.dto.points.PointsTransactionReponseDTO;
 import com.mindtree.atlantis.loyalty.core.dto.points.PointsTransactionRequestDTO;
+import com.mindtree.atlantis.loyalty.core.dto.points.TransactionType;
 import com.mindtree.atlantis.loyalty.core.dto.points.TransactionsDTO;
 import com.mindtree.atlantis.loyalty.core.exception.AtlantisBusinessException;
 import com.mindtree.atlantis.loyalty.core.spi.points.LoyaltyPointsService;
@@ -39,7 +41,13 @@ public class ALPController {
 	@GetMapping(value = "/transactions/loyaltyid/{loyaltyid}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseWrapper<TransactionsDTO> getTransactions(@PathVariable("loyaltyid") String loyaltyid,
 			@RequestParam(name = "type", required = false) String[] transactionTypes) throws AtlantisBusinessException {
-		return createResponseWrapper(loyaltyPointsService.getTransactions(loyaltyid, transactionTypes), ID_ATLANTIS_LOYALTY_READ_TRANSACTIONS);
+		String[] resolveTransactionTypes = TransactionType.resolveTransactionTypes(transactionTypes);
+		if(resolveTransactionTypes.length > 0) {
+			return createResponseWrapper(loyaltyPointsService.getTransactions(loyaltyid, resolveTransactionTypes), ID_ATLANTIS_LOYALTY_READ_TRANSACTIONS);
+		} else {
+			throw new AtlantisBusinessException(AtlantisErrorConstants.INVALID_INPUT_PARAMETER.getErrorCode(), 
+					String.format(AtlantisErrorConstants.INVALID_INPUT_PARAMETER.getErrorMessage(), "'type' query parameter"));
+		}
 	}
 
 	@PostMapping(value = "/loyaltypoints/purchase", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)

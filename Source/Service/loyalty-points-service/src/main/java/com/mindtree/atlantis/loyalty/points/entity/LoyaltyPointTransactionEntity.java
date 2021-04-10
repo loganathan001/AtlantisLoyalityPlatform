@@ -26,10 +26,10 @@ public class LoyaltyPointTransactionEntity {
 	private String loyaltyPointId;
 
 	@Field(name="points")
-	private String points;
+	private long points;
 	
 	@Field(name="balance_points")
-	private String balancePoints;
+	private long balancePoints;
 	
 	@Field(name="status")
 	private String status;

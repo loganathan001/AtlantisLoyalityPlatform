@@ -5,6 +5,6 @@ import lombok.Data;
 @Data
 public class LoyaltyPointsDTO {
 	
-	private String loyaltyPoints;
+	private long loyaltyPoints;
 
 }
