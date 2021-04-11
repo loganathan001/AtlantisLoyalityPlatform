@@ -40,10 +40,13 @@ public class ALPController {
 
 	@GetMapping(value = "/transactions/loyaltyid/{loyaltyid}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseWrapper<TransactionsDTO> getTransactions(@PathVariable("loyaltyid") String loyaltyid,
-			@RequestParam(name = "type", required = false) String[] transactionTypes) throws AtlantisBusinessException {
+			@RequestParam(name = "type", required = false) String[] transactionTypes,
+			@RequestParam(name = "pageStart", required = false) Integer pageStart,
+			@RequestParam(name = "pageSize", required = false) Integer pageSize
+			) throws AtlantisBusinessException {
 		String[] resolveTransactionTypes = TransactionType.resolveTransactionTypes(transactionTypes);
 		if(resolveTransactionTypes.length > 0) {
-			return createResponseWrapper(loyaltyPointsService.getTransactions(loyaltyid, resolveTransactionTypes), ID_ATLANTIS_LOYALTY_READ_TRANSACTIONS);
+			return createResponseWrapper(loyaltyPointsService.getTransactions(loyaltyid, resolveTransactionTypes, pageStart, pageSize), ID_ATLANTIS_LOYALTY_READ_TRANSACTIONS);
 		} else {
 			throw new AtlantisBusinessException(AtlantisErrorConstants.INVALID_INPUT_PARAMETER.getErrorCode(), 
 					String.format(AtlantisErrorConstants.INVALID_INPUT_PARAMETER.getErrorMessage(), "'type' query parameter"));

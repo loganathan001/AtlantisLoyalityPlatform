@@ -6,6 +6,8 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 import com.mindtree.atlantis.loyalty.core.constant.AtlantisErrorConstants;
@@ -24,6 +26,10 @@ import com.mindtree.atlantis.loyalty.points.repository.LoyaltyPointTransactionRe
 @Component
 public class LoyaltyPointsServiceImpl implements LoyaltyPointsService {
 	
+	private static final int DEFAULT_PAGE_START_INDEX = 0;
+
+	private static final int DEFAULT_PAGE_SIZE = 10;
+
 	@Autowired
 	private LoyaltyPointRepository loyaltyPointRepository;
 	
@@ -44,8 +50,9 @@ public class LoyaltyPointsServiceImpl implements LoyaltyPointsService {
 	}
 
 	@Override
-	public TransactionsDTO getTransactions(String loyaltyid, String[] transactionTypes) throws AtlantisBusinessException {
-		List<LoyaltyPointTransactionEntity> loyaltyPointTransactionsEntities = loyaltyPointTransactionRepository.findByLoyaltyPointIdAndTransactionTypeInOrderByCrDtimesAsc(loyaltyid, Arrays.asList(transactionTypes));
+	public TransactionsDTO getTransactions(String loyaltyid, String[] transactionTypes, Integer pageStart, Integer pageFetch) throws AtlantisBusinessException {
+		Pageable pageable = getPageableForTransactions(pageStart, pageFetch);
+		List<LoyaltyPointTransactionEntity> loyaltyPointTransactionsEntities = loyaltyPointTransactionRepository.findByLoyaltyPointIdAndTransactionTypeInOrderByCrDtimesAsc(loyaltyid, Arrays.asList(transactionTypes), pageable);
 		TransactionsDTO transactionsDTO = new TransactionsDTO();
 		List<TransactionDTO> transactionDtoList = 
 				loyaltyPointTransactionsEntities.stream()
@@ -62,6 +69,38 @@ public class LoyaltyPointsServiceImpl implements LoyaltyPointsService {
 						.collect(Collectors.toList());
 		transactionsDTO.setTransactions(transactionDtoList);
 		return transactionsDTO;
+	}
+
+	private Pageable getPageableForTransactions(Integer pageStart, Integer pageSize) throws AtlantisBusinessException {
+		if(pageStart == null && pageSize == null) {
+			return null;
+		}
+		
+		int pageStartIndex;
+		if(pageStart == null) {
+			pageStartIndex = DEFAULT_PAGE_START_INDEX;
+		} else {
+			if(pageStart.intValue() > 0) {
+				pageStartIndex = pageStart.intValue() - 1;
+			} else {
+				throw new AtlantisBusinessException(AtlantisErrorConstants.INVALID_INPUT_PARAMETER.getErrorCode(),
+						String.format(AtlantisErrorConstants.INVALID_INPUT_PARAMETER.getErrorMessage(), "pageStart"));
+			}
+		}
+		
+		int pageSizeVal;
+		if(pageSize == null) {
+			pageSizeVal = DEFAULT_PAGE_SIZE;
+		} else {
+			if(pageSize.intValue() > 0) {
+				pageSizeVal = pageSize.intValue();
+			} else {
+				throw new AtlantisBusinessException(AtlantisErrorConstants.INVALID_INPUT_PARAMETER.getErrorCode(),
+						String.format(AtlantisErrorConstants.INVALID_INPUT_PARAMETER.getErrorMessage(), "pageStart"));
+			}
+		}
+		
+		return PageRequest.of(pageStartIndex, pageSizeVal);
 	}
 
 	@Override

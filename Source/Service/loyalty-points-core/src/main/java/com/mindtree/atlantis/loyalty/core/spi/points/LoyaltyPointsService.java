@@ -27,7 +27,7 @@ public interface LoyaltyPointsService {
 	 * @param transactionType the transaction type
 	 * @return the transactions
 	 */
-	public TransactionsDTO getTransactions(String loyaltyid, String[] transactionType) throws AtlantisBusinessException;
+	public TransactionsDTO getTransactions(String loyaltyid, String[] transactionType, Integer pageStart, Integer pageFetch) throws AtlantisBusinessException;
 
 	/**
 	 * Purchase points.
